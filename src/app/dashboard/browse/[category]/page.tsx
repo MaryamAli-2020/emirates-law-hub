@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 type BrowsePageProps = {
@@ -55,7 +54,7 @@ export default function BrowsePage({ params }: BrowsePageProps) {
             <Card key={item.id} className="flex flex-col">
               <CardHeader>
                 <CardTitle className="font-headline text-lg">{item.title}</CardTitle>
-                <CardDescription className="text-xs">{item.date}</CardDescription>
+                <CardDescription className="text-xs">{item.legislationNumber} | {item.date}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground line-clamp-3">{item.summary}</p>
@@ -84,3 +83,5 @@ export default function BrowsePage({ params }: BrowsePageProps) {
     </div>
   )
 }
+
+    

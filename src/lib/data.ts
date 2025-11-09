@@ -24,7 +24,7 @@ const legislations: Legislation[] = [
     subjectMatter: 'Marriage Registration Procedures',
     category: 'Family and Personal Status',
     date: '2024-09-15',
-    summary: 'wedding documentation requirements',
+    summary: 'This resolution introduces the second amendment to the procedures for registering marriages, focusing on updating documentation requirements and streamlining the application process for citizens and residents.',
     fullText: `UNITED ARAB EMIRATES
 MINISTERIAL RESOLUTION
 
@@ -293,7 +293,7 @@ END OF LEGISLATION
     subjectMatter: 'Digital Forensics Procedures',
     category: 'Cybersecurity and Data Protection',
     date: '2022-03-09',
-    summary: 'electronic evidence collection standards',
+    summary: 'This resolution amends existing digital forensics procedures, establishing new standards for the collection, preservation, and analysis of electronic evidence to ensure its integrity and admissibility in legal proceedings.',
     fullText: `UNITED ARAB EMIRATES
 CABINET RESOLUTION
 
@@ -537,6 +537,66 @@ Article 27: Official Language
 The Arabic text of this legislation shall be the official and authoritative text. In case of any discrepancy, the Arabic text shall prevail.
 
 ═══════════════════════════════════════════════════════════════`
+  },
+  {
+    id: '3',
+    slug: 'federal-law-on-public-health',
+    title: 'Federal Law on Public Health',
+    legislationNumber: 'Federal Law No. 14 of 2014',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Public Health Protection',
+    category: 'Health',
+    date: '2014-12-18',
+    summary: 'A comprehensive law to protect public health, prevent the spread of communicable diseases, and regulate healthcare services in the UAE.',
+    fullText: 'Full text of Federal Law No. 14 of 2014 concerning Public Health...'
+  },
+  {
+    id: '4',
+    slug: 'executive-regulation-of-labour-law',
+    title: 'Executive Regulation of the Labour Law',
+    legislationNumber: 'Cabinet Resolution No. 1 of 2022',
+    legislationType: 'Executive Regulations',
+    subjectMatter: 'Labour Relations',
+    category: 'Work',
+    date: '2022-02-02',
+    summary: 'Details the implementation of the Federal Decree-Law on the Regulation of Labour Relations, covering employment contracts, wages, working hours, and dispute resolution.',
+    fullText: 'Full text of Cabinet Resolution No. 1 of 2022 on the Executive Regulation of the Labour Law...'
+  },
+  {
+    id: '5',
+    slug: 'regulatory-decision-on-virtual-assets',
+    title: 'Regulatory Decision on Virtual Assets',
+    legislationNumber: 'ADGM FSRA Decision No. 5 of 2023',
+    legislationType: 'Regulatory Decision',
+    subjectMatter: 'Virtual Assets and Cryptocurrency',
+    category: 'Regulatory Decision',
+    date: '2023-07-25',
+    summary: 'Establishes the framework for regulating virtual asset activities within the Abu Dhabi Global Market (ADGM), including licensing, marketing, and anti-money laundering (AML) requirements.',
+    fullText: 'Full text of the ADGM FSRA Regulatory Decision on Virtual Assets...'
+  },
+  {
+    id: '6',
+    slug: 'federal-law-on-entry-and-residence-of-foreigners',
+    title: 'Federal Decree-Law on Entry and Residence of Foreigners',
+    legislationNumber: 'Federal Decree-Law No. 29 of 2021',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Immigration and Visas',
+    category: 'Residence',
+    date: '2021-09-20',
+    summary: 'Modernizes the legal framework for the entry and residence of foreign nationals in the UAE, introducing new visa categories and residence permits.',
+    fullText: 'Full text of Federal Decree-Law No. 29 of 2021...'
+  },
+  {
+    id: '7',
+    slug: 'federal-law-on-private-education',
+    title: 'Federal Law on Private Education',
+    legislationNumber: 'Federal Law No. 1 of 2020',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Education Sector Regulation',
+    category: 'Education',
+    date: '2020-01-15',
+    summary: 'Regulates private schools in the UAE, covering licensing, curriculum standards, student affairs, and fees.',
+    fullText: 'Full text of Federal Law No. 1 of 2020 on Private Education...'
   }
 ];
 
@@ -549,7 +609,10 @@ export const getLegislations = (query?: string | null) => {
     (item) =>
       item.title.toLowerCase().includes(lowerCaseQuery) ||
       item.summary.toLowerCase().includes(lowerCaseQuery) ||
-      item.category.toLowerCase().includes(lowerCaseQuery)
+      item.category.toLowerCase().includes(lowerCaseQuery) ||
+      item.legislationNumber.toLowerCase().includes(lowerCaseQuery) ||
+      item.legislationType.toLowerCase().includes(lowerCaseQuery) ||
+      item.subjectMatter.toLowerCase().includes(lowerCaseQuery)
   );
 };
 
@@ -590,3 +653,5 @@ export const getLegislationStats = () => {
 
   return Object.entries(stats).map(([name, value]) => ({ name: name as LegislationCategory, value: value as number }));
 };
+
+    

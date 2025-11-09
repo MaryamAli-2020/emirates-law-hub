@@ -12,7 +12,8 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { redirect } from "next/navigation"
+import { searchAction } from "@/app/actions"
+
 
 export default function SearchPage({
   searchParams,
@@ -22,35 +23,29 @@ export default function SearchPage({
   const query = searchParams?.q || ""
   const results = getLegislations(query)
 
-  async function searchAction(formData: FormData) {
-    'use server'
-    const query = formData.get('query') as string
-    redirect(`/dashboard/search?q=${encodeURIComponent(query)}`)
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <header>
         <h1 className="text-3xl font-bold font-headline">Search Results</h1>
-        <p className="text-muted-foreground mt-2">
+        <form action={searchAction} className="mt-4 max-w-2xl">
+            <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+                type="search"
+                name="query"
+                defaultValue={query}
+                placeholder="Ask me about UAE legislation... (Natural language search)"
+                className="w-full rounded-full bg-background pl-12 pr-24 py-3 h-14 text-lg"
+                aria-label="Search legislation"
+            />
+            <Button type="submit" size="lg" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-11">
+                Search
+            </Button>
+            </div>
+        </form>
+         <p className="text-muted-foreground mt-4">
           {query ? `Showing ${results.length} results for "${query}"` : "Enter a term to search for legislation."}
         </p>
-         <form action={searchAction} className="mt-6 max-w-2xl">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="search"
-              name="query"
-              defaultValue={query}
-              placeholder="Search for legislation by keyword..."
-              className="w-full rounded-md bg-background pl-10 pr-20 py-2"
-              aria-label="Search legislation"
-            />
-            <Button type="submit" className="absolute right-1 top-1/2 -translate-y-1/2">
-              Search
-            </Button>
-          </div>
-        </form>
       </header>
       
       {results.length > 0 ? (
@@ -60,7 +55,7 @@ export default function SearchPage({
               <CardHeader>
                 <Badge variant="secondary" className="w-fit mb-2">{item.category}</Badge>
                 <CardTitle className="font-headline text-lg">{item.title}</CardTitle>
-                <CardDescription className="text-xs">{item.date}</CardDescription>
+                <CardDescription className="text-xs">{item.legislationNumber} | {item.date}</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground line-clamp-3">{item.summary}</p>
@@ -87,3 +82,5 @@ export default function SearchPage({
     </div>
   )
 }
+
+    
