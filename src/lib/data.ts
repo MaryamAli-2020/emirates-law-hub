@@ -604,16 +604,21 @@ export const getLegislations = (query?: string | null) => {
   if (!query) {
     return legislations;
   }
-  const lowerCaseQuery = query.toLowerCase();
-  return legislations.filter(
-    (item) =>
-      item.title.toLowerCase().includes(lowerCaseQuery) ||
-      item.summary.toLowerCase().includes(lowerCaseQuery) ||
-      item.category.toLowerCase().includes(lowerCaseQuery) ||
-      item.legislationNumber.toLowerCase().includes(lowerCaseQuery) ||
-      item.legislationType.toLowerCase().includes(lowerCaseQuery) ||
-      item.subjectMatter.toLowerCase().includes(lowerCaseQuery)
-  );
+  const queryWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+  
+  return legislations.filter((item) => {
+    const itemText = [
+      item.title,
+      item.summary,
+      item.category,
+      item.legislationNumber,
+      item.legislationType,
+      item.subjectMatter,
+      item.fullText,
+    ].join(' ').toLowerCase();
+    
+    return queryWords.every(word => itemText.includes(word));
+  });
 };
 
 export const getLegislationBySlug = (slug: string) => {

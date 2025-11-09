@@ -29,31 +29,37 @@ import { Separator } from '@/components/ui/separator';
 
 // Helper function to calculate relevance score
 const getRelevance = (item: Legislation, query: string): number => {
-  const lowerQuery = query.toLowerCase();
+  const queryWords = query.toLowerCase().split(/\s+/).filter(Boolean);
   let score = 0;
-  if (!lowerQuery) return 100;
+  if (queryWords.length === 0) return 100;
 
-  // Higher score for title match
-  if (item.title.toLowerCase().includes(lowerQuery)) {
-    score += 50;
-  }
-  // Medium score for summary, subject matter, and full text
-  if (item.summary.toLowerCase().includes(lowerQuery)) {
-    score += 25;
-  }
-  if (item.subjectMatter.toLowerCase().includes(lowerQuery)) {
-    score += 15;
-  }
-   if (item.fullText.toLowerCase().includes(lowerQuery)) {
-    score += 5;
-  }
-  // Lower score for other fields
-  if (item.category.toLowerCase().includes(lowerQuery)) {
-    score += 3;
-  }
-  if (item.legislationNumber.toLowerCase().includes(lowerQuery)) {
-    score += 2;
-  }
+  const itemTitle = item.title.toLowerCase();
+  const itemSummary = item.summary.toLowerCase();
+  const itemSubject = item.subjectMatter.toLowerCase();
+  const itemText = item.fullText.toLowerCase();
+  const itemCategory = item.category.toLowerCase();
+  const itemLegislationNumber = item.legislationNumber.toLowerCase();
+
+  queryWords.forEach(word => {
+    if (itemTitle.includes(word)) {
+      score += 50 / queryWords.length;
+    }
+    if (itemSummary.includes(word)) {
+      score += 25 / queryWords.length;
+    }
+    if (itemSubject.includes(word)) {
+      score += 15 / queryWords.length;
+    }
+    if (itemText.includes(word)) {
+      score += 5 / queryWords.length;
+    }
+    if (itemCategory.includes(word)) {
+      score += 3 / queryWords.length;
+    }
+    if (itemLegislationNumber.includes(word)) {
+      score += 2 / queryWords.length;
+    }
+  });
   
   // Simple hash to add some pseudo-randomness for variety
   const hash = item.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
