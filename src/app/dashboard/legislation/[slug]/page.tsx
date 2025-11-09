@@ -35,25 +35,30 @@ export default function LegislationPage({ params }: LegislationPageProps) {
       <div className="max-w-4xl mx-auto">
         <Card className="overflow-hidden">
             <CardHeader className="bg-muted/50 p-6">
-            <Badge variant="secondary" className="w-fit mb-2">{legislation.category}</Badge>
+            <div className="flex flex-wrap gap-2 mb-2">
+                <Badge variant="secondary">{legislation.category}</Badge>
+                <Badge variant="outline">{legislation.legislationType}</Badge>
+            </div>
             <CardTitle className="font-headline text-3xl text-primary">{legislation.title}</CardTitle>
-            <CardDescription className="text-base">Enacted on: {new Date(legislation.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</CardDescription>
+            <CardDescription className="text-base">
+                {legislation.legislationNumber} | Enacted on: {new Date(legislation.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
                 <div className="prose prose-sm md:prose-base max-w-none text-foreground">
+                    <h3 className="font-bold">Subject Matter</h3>
+                    <p className="text-muted-foreground">{legislation.subjectMatter}</p>
+                    
+                    <Separator className="my-6" />
+                    
                     <h3 className="font-bold">Summary</h3>
                     <p className="text-muted-foreground">{legislation.summary}</p>
                     
                     <Separator className="my-6" />
 
                     <h3 className="font-bold">Full Text</h3>
-                    <div className="space-y-4">
-                        {legislation.fullText.split(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/g).filter(Boolean).map((part, index) => {
-                            if (part.match(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/)) {
-                                return <p key={index} className="font-semibold text-primary mt-4">{part.trim()}</p>
-                            }
-                            return <p key={index}>{part.trim()}</p>
-                        })}
+                    <div className="space-y-4 whitespace-pre-wrap font-mono text-sm">
+                        {legislation.fullText}
                     </div>
                 </div>
             </CardContent>
