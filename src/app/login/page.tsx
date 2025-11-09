@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Loader } from 'lucide-react';
+import { Loader, Lock } from 'lucide-react';
 import Image from 'next/image';
 
 const formSchema = z.object({
@@ -44,9 +44,14 @@ type FormValues = z.infer<typeof formSchema>;
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
+  const [isClient, setIsClient] = useState(false);
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -98,6 +103,7 @@ export default function LoginPage() {
             <h1 className="text-2xl font-headline font-bold">Emirates Law Hub</h1>
             <p className="text-muted-foreground">Access your account or create a new one.</p>
         </div>
+        {isClient ? (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
@@ -214,6 +220,14 @@ export default function LoginPage() {
             </Card>
           </TabsContent>
         </Tabs>
+         ) : (
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Loader className="animate-spin h-8 w-8 text-muted-foreground mx-auto" />
+              <p className="text-sm text-muted-foreground mt-2">Loading...</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
