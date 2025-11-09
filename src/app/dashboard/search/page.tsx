@@ -42,16 +42,16 @@ const getRelevance = (item: Legislation, query: string): number => {
 
   queryWords.forEach(word => {
     if (itemTitle.includes(word)) {
-      score += 50 / queryWords.length;
+      score += 30 / queryWords.length;
     }
     if (itemSummary.includes(word)) {
-      score += 25 / queryWords.length;
+      score += 20 / queryWords.length;
     }
     if (itemSubject.includes(word)) {
-      score += 15 / queryWords.length;
+      score += 25 / queryWords.length;
     }
     if (itemText.includes(word)) {
-      score += 5 / queryWords.length;
+      score += 20 / queryWords.length;
     }
     if (itemCategory.includes(word)) {
       score += 3 / queryWords.length;
@@ -300,3 +300,5 @@ export default function SearchPage() {
     </div>
   );
 }
+
+    

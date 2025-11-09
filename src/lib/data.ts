@@ -597,6 +597,42 @@ The Arabic text of this legislation shall be the official and authoritative text
     date: '2020-01-15',
     summary: 'Regulates private schools in the UAE, covering licensing, curriculum standards, student affairs, and fees.',
     fullText: 'Full text of Federal Law No. 1 of 2020 on Private Education...'
+  },
+  {
+    id: '8',
+    slug: 'federal-decree-law-on-combating-cybercrimes',
+    title: 'Federal Decree-Law on Combating Cybercrimes',
+    legislationNumber: 'Federal Decree-Law No. 34 of 2021',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Cybercrime and Information Security',
+    category: 'Cybersecurity and Data Protection',
+    date: '2021-11-20',
+    summary: 'Provides a comprehensive legal framework for combating cybercrimes, protecting data and privacy, and ensuring the security of information systems.',
+    fullText: 'Full text of Federal Decree-Law No. 34 of 2021 on Combating Cybercrimes...'
+  },
+  {
+    id: '9',
+    slug: 'federal-law-on-data-protection',
+    title: 'Federal Decree-Law on the Protection of Personal Data',
+    legislationNumber: 'Federal Decree-Law No. 45 of 2021',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Data Privacy and Protection',
+    category: 'Cybersecurity and Data Protection',
+    date: '2021-11-26',
+    summary: 'Establishes the rules for protecting personal data in the UAE, defining the rights and obligations of data controllers and processors.',
+    fullText: 'Full text of Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data...'
+  },
+  {
+    id: '10',
+    slug: 'federal-law-on-higher-education',
+    title: 'Federal Law on Higher Education',
+    legislationNumber: 'Federal Law No. 10 of 2019',
+    legislationType: 'Federal Law',
+    subjectMatter: 'Higher Education Regulation',
+    category: 'Education',
+    date: '2019-04-12',
+    summary: 'Regulates higher education institutions in the UAE, including licensing, accreditation, and quality assurance standards.',
+    fullText: 'Full text of Federal Law No. 10 of 2019 on Higher Education...'
   }
 ];
 
@@ -658,5 +694,7 @@ export const getLegislationStats = () => {
 
   return Object.entries(stats).map(([name, value]) => ({ name: name as LegislationCategory, value: value as number }));
 };
+
+    
 
     
