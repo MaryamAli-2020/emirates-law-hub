@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
   AuthErrorCodes,
 } from 'firebase/auth';
-import { useAuth } from '@/firebase';
+import { useAuth, useUser } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -47,12 +47,20 @@ export default function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');
   const [isClient, setIsClient] = useState(false);
   const auth = useAuth();
+  const { user, isUserLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    // Redirect if user is already logged in
+    if (!isUserLoading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, isUserLoading, router]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -78,16 +86,16 @@ export default function LoginPage() {
         await signInWithEmailAndPassword(auth, values.email, values.password);
         toast({
           title: 'Login Successful',
-          description: 'Welcome back!',
+          description: 'Welcome back! Redirecting...',
         });
       } else {
         await createUserWithEmailAndPassword(auth, values.email, values.password);
         toast({
           title: 'Account Created',
-          description: 'You have been successfully signed up.',
+          description: 'You have been successfully signed up. Redirecting...',
         });
       }
-      router.push('/dashboard');
+      // Redirection is now handled by the useEffect hook
     } catch (error: any) {
       console.error(error);
       let description = 'An unexpected error occurred.';
