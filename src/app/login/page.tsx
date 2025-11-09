@@ -56,7 +56,7 @@ export default function LoginPage() {
   }, []);
 
   useEffect(() => {
-    // Redirect if user is already logged in
+    // Redirect if user is already logged in and navigates to login page
     if (!isUserLoading && user) {
       router.push('/dashboard');
     }
@@ -95,7 +95,7 @@ export default function LoginPage() {
           description: 'You have been successfully signed up. Redirecting...',
         });
       }
-      // Redirection is now handled by the useEffect hook
+      router.push('/dashboard');
     } catch (error: any) {
       console.error(error);
       let description = 'An unexpected error occurred.';
@@ -114,6 +114,19 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  if (isUserLoading || user) {
+    return (
+       <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Loader className="animate-spin h-8 w-8 text-muted-foreground mx-auto" />
+              <p className="text-sm text-muted-foreground mt-2">Loading...</p>
+            </CardContent>
+          </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
