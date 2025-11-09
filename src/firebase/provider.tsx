@@ -78,11 +78,18 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
 
     const unsubscribe = onAuthStateChanged(
       auth,
-      (firebaseUser) => { // Auth state determined
+      async (firebaseUser) => { // Auth state determined
+        if (firebaseUser) {
+          const token = await firebaseUser.getIdToken();
+          document.cookie = `firebaseIdToken=${token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+        } else {
+          document.cookie = 'firebaseIdToken=; path=/; max-age=0';
+        }
         setUserAuthState({ user: firebaseUser, isUserLoading: false, userError: null });
       },
       (error) => { // Auth listener error
         console.error("FirebaseProvider: onAuthStateChanged error:", error);
+        document.cookie = 'firebaseIdToken=; path=/; max-age=0';
         setUserAuthState({ user: null, isUserLoading: false, userError: error });
       }
     );
