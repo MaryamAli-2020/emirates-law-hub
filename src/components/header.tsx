@@ -41,12 +41,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background">
       <div className="container mx-auto flex h-16 items-center gap-4 px-4">
-        <div className="flex items-center gap-4">
+        <Link href="/dashboard" className="flex items-center gap-4">
            <Image src="/logo1.svg" alt="UAE Gov Logo" width={40} height={40} />
            <Image src="/logo2.svg" alt="UAE Logo" width={40} height={40} />
            <Image src="/logo3.svg" alt="Ministry Logo" width={40} height={40} />
            <Image src="/logo4.svg" alt="AD Logo" width={40} height={40} />
-        </div>
+        </Link>
 
         <div className="hidden lg:flex flex-1 justify-center items-center gap-6">
             <div className="relative w-full max-w-xs">
