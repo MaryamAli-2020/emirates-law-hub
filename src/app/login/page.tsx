@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Loader, Lock } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import Image from 'next/image';
 
 const formSchema = z.object({
