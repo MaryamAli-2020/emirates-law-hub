@@ -31,6 +31,18 @@
       "imageHint": "office building"
     },
     {
+      "id": "health",
+      "description": "A doctor in a modern medical setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1538688537163-f54c865136b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtZWRpY2FsJTIwZG9jdG9yfGVufDB8fHx8MTc2MjgxNzgwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "medical doctor"
+    },
+    {
+      "id": "education",
+      "description": "Students in a classroom setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdHVkZW50cyUyMGNsYXNzcm9vbXxlbnwwfHx8fDE3NjI4MTc4MzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "students classroom"
+    },
+    {
       "id": "user-avatar",
       "description": "Placeholder for user avatar.",
       "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjI1OTQ3NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",

@@ -31,46 +31,48 @@ export default function LegislationPage({ params }: LegislationPageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-muted/50 p-6">
-          <Badge variant="secondary" className="w-fit mb-2">{legislation.category}</Badge>
-          <CardTitle className="font-headline text-3xl text-primary">{legislation.title}</CardTitle>
-          <CardDescription className="text-base">Enacted on: {new Date(legislation.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-            <div className="prose prose-sm md:prose-base max-w-none text-foreground">
-                <h3 className="font-bold">Summary</h3>
-                <p className="text-muted-foreground">{legislation.summary}</p>
-                
-                <Separator className="my-6" />
-
-                <h3 className="font-bold">Full Text</h3>
-                <div className="space-y-4">
-                    {legislation.fullText.split(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/g).filter(Boolean).map((part, index) => {
-                        if (part.match(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/)) {
-                            return <p key={index} className="font-semibold text-primary mt-4">{part.trim()}</p>
-                        }
-                        return <p key={index}>{part.trim()}</p>
-                    })}
-                </div>
-            </div>
-        </CardContent>
-      </Card>
-
-      <div className="mt-6">
-        <Card>
-            <CardHeader>
-                <CardTitle className="font-headline text-lg">Related Documents</CardTitle>
-                <CardDescription>Associated amendments and guidelines.</CardDescription>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <Card className="overflow-hidden">
+            <CardHeader className="bg-muted/50 p-6">
+            <Badge variant="secondary" className="w-fit mb-2">{legislation.category}</Badge>
+            <CardTitle className="font-headline text-3xl text-primary">{legislation.title}</CardTitle>
+            <CardDescription className="text-base">Enacted on: {new Date(legislation.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ul className="list-disc pl-5 text-sm space-y-2 text-muted-foreground">
-                    <li><a href="#" className="text-primary hover:underline">Amendment A.1</a></li>
-                    <li><a href="#" className="text-primary hover:underline">Guideline for Implementation</a></li>
-                </ul>
+            <CardContent className="p-6">
+                <div className="prose prose-sm md:prose-base max-w-none text-foreground">
+                    <h3 className="font-bold">Summary</h3>
+                    <p className="text-muted-foreground">{legislation.summary}</p>
+                    
+                    <Separator className="my-6" />
+
+                    <h3 className="font-bold">Full Text</h3>
+                    <div className="space-y-4">
+                        {legislation.fullText.split(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/g).filter(Boolean).map((part, index) => {
+                            if (part.match(/(Article \d+:|Chapter \d+:|Section [A-Z]:|Decree Article \d+:|Part \d+:|Provision \d+\.)/)) {
+                                return <p key={index} className="font-semibold text-primary mt-4">{part.trim()}</p>
+                            }
+                            return <p key={index}>{part.trim()}</p>
+                        })}
+                    </div>
+                </div>
             </CardContent>
         </Card>
+
+        <div className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-lg">Related Documents</CardTitle>
+                    <CardDescription>Associated amendments and guidelines.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ul className="list-disc pl-5 text-sm space-y-2 text-muted-foreground">
+                        <li><a href="#" className="text-primary hover:underline">Amendment A.1</a></li>
+                        <li><a href="#" className="text-primary hover:underline">Guideline for Implementation</a></li>
+                    </ul>
+                </CardContent>
+            </Card>
+        </div>
       </div>
     </div>
   )

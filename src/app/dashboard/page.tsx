@@ -1,6 +1,7 @@
+"use client";
+
 import Link from "next/link"
 import Image from "next/image"
-import { redirect } from 'next/navigation'
 import {
   Briefcase,
   FileText,
@@ -9,6 +10,8 @@ import {
   Scale,
   Search,
   ArrowRight,
+  HeartPulse,
+  BookOpen,
 } from "lucide-react"
 import {
   Card,
@@ -16,19 +19,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { DashboardChart } from "@/components/dashboard-chart"
 import {
   getLegislations,
   getLegislationStats,
@@ -36,6 +31,7 @@ import {
   LegislationCategory
 } from "@/lib/data"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
+import { searchAction } from "@/app/actions"
 
 const categoryIcons: Record<LegislationCategory, React.ReactNode> = {
   "Regulatory Decision": <Scale className="h-6 w-6" />,
@@ -43,6 +39,8 @@ const categoryIcons: Record<LegislationCategory, React.ReactNode> = {
   "Federal Law": <Landmark className="h-6 w-6" />,
   "Residence": <Home className="h-6 w-6" />,
   "Work": <Briefcase className="h-6 w-6" />,
+  "Health": <HeartPulse className="h-6 w-6" />,
+  "Education": <BookOpen className="h-6 w-6" />,
 }
 
 export default function Dashboard() {
@@ -50,115 +48,96 @@ export default function Dashboard() {
   const stats = getLegislationStats()
   const categories = getCategories()
 
-  async function searchAction(formData: FormData) {
-    'use server'
-    const query = formData.get('query') as string
-    redirect(`/dashboard/search?q=${encodeURIComponent(query)}`)
-  }
-
   return (
-    <div className="flex flex-1 flex-col gap-6">
-      <section className="text-center py-10 md:py-16">
-        <h1 className="text-4xl md:text-5xl font-bold font-headline text-primary tracking-tight">
-          Emirates Law Hub
-        </h1>
-        <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-          Your comprehensive portal for navigating UAE legislation.
-        </p>
-        <form action={searchAction} className="mt-8 max-w-xl mx-auto">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="search"
-              name="query"
-              placeholder="Search for legislation by keyword..."
-              className="w-full rounded-full bg-white pl-10 pr-20 py-6 text-base"
-              aria-label="Search legislation"
-            />
-            <Button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full px-6 py-3 bg-accent text-accent-foreground hover:bg-accent/90">
-              Search
-            </Button>
-          </div>
-        </form>
+    <div className="flex flex-1 flex-col">
+       <section className="relative py-20 md:py-32 text-white bg-gradient-to-br from-red-800 to-blue-900 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-[url('/hero-bg-dots.svg')] bg-repeat bg-center opacity-10" 
+          style={{ backgroundSize: '30px 30px' }}>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+            <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">
+              UAE legislation
+            </h1>
+            <p className="mt-4 max-w-4xl text-lg">
+                The "Emirates Legislation" platform is the official platform for the legislation of the United Arab Emirates government. It is developed and supervised by the General Secretariat of the Council of Ministers in coordination with all relevant authorities. The platform aims to be a unified, integrated, comprehensive and updated system that includes all legislation in force in the country, and makes it more accessible to all segments of society from inside and outside the country. The platform's contents include federal laws, their executive regulations and other regulatory decisions in accordance with the latest amendments These legislations can be reviewed by selecting one of the main sectors listed below, or using the platform's search engine.
+            </p>
+        </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-bold font-headline mb-4">Browse by Category</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {categories.map((category) => {
-            const placeholder = PlaceHolderImages.find(p => p.id === category.slug);
-            return (
-              <Link href={`/dashboard/browse/${category.slug}`} key={category.slug}>
-                <Card className="group overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
-                  <div className="relative h-40 w-full">
-                    {placeholder && (
-                       <Image
-                         src={placeholder.imageUrl}
-                         alt={category.name}
-                         fill
-                         data-ai-hint={placeholder.imageHint}
-                         className="object-cover transition-transform group-hover:scale-105"
-                       />
-                    )}
-                     <div className="absolute inset-0 bg-black/40"></div>
-                  </div>
-                  <CardHeader className="relative -mt-16 z-10">
-                      <div className="bg-primary/80 backdrop-blur-sm text-primary-foreground rounded-full p-3 w-fit mb-2 shadow-xl border border-primary-foreground/20">
-                        {categoryIcons[category.name]}
+      <section className="container mx-auto px-4 -mt-16 relative z-10">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="md:col-span-2 lg:col-span-1">
+                <CardHeader>
+                    <CardTitle>Legislation statistics</CardTitle>
+                </CardHeader>
+                <CardContent className="flex justify-around items-center">
+                    {stats.slice(0,3).map(stat => (
+                        <div key={stat.name} className="text-center">
+                            <p className="text-4xl font-bold text-primary">{stat.value}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{stat.name}</p>
+                        </div>
+                    ))}
+                </CardContent>
+            </Card>
+             {categories.slice(0,3).map((category) => {
+                const placeholder = PlaceHolderImages.find(p => p.id === category.slug);
+                return (
+                  <Link href={`/dashboard/browse/${category.slug}`} key={category.slug}>
+                    <Card className="group overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 h-full">
+                      <div className="relative h-full">
+                        {placeholder && (
+                           <Image
+                             src={placeholder.imageUrl}
+                             alt={category.name}
+                             fill
+                             data-ai-hint={placeholder.imageHint}
+                             className="object-cover transition-transform group-hover:scale-105"
+                           />
+                        )}
+                         <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-4">
+                            <div className="text-white">
+                                <p className="text-2xl font-bold">{stats.find(s => s.name === category.name)?.value}</p>
+                                <p className="text-sm">Legislation</p>
+                                <p className="font-semibold mt-1">{category.name}</p>
+                            </div>
+                         </div>
                       </div>
-                      <CardTitle className="font-headline text-white">{category.name}</CardTitle>
-                  </CardHeader>
-                </Card>
-              </Link>
-            )
-          })}
+                    </Card>
+                  </Link>
+                )
+              })}
+        </div>
+      </section>
+      
+      <section className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold font-headline mb-4">Browse by Category</h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {categories.map((category) => {
+                const placeholder = PlaceHolderImages.find(p => p.id === category.slug);
+                return (
+                <Link href={`/dashboard/browse/${category.slug}`} key={category.slug}>
+                    <Card className="group overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
+                    <CardHeader>
+                        <CardTitle className="font-headline text-primary">{category.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                            Browse all legislation under the {category.name} category.
+                        </p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button variant="link" className="p-0">
+                            View All <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </CardFooter>
+                    </Card>
+                </Link>
+                )
+            })}
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <div className="lg:col-span-4">
-            <DashboardChart data={stats} />
-        </div>
-        <div className="lg:col-span-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Recent Legislation</CardTitle>
-              <CardDescription>
-                The latest updates to the legal framework.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead className="hidden sm:table-cell">Category</TableHead>
-                    <TableHead className="text-right">View</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentLegislations.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium max-w-xs truncate">{item.title}</TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge variant="secondary">{item.category}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button asChild size="sm" variant="ghost" className="h-8 w-8 p-0">
-                          <Link href={`/dashboard/legislation/${item.slug}`}>
-                            <ArrowRight className="h-4 w-4" />
-                            <span className="sr-only">View Details</span>
-                          </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
     </div>
   )
 }

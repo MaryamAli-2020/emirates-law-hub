@@ -1,6 +1,5 @@
-import 'server-only'
 
-export type LegislationCategory = 'Regulatory Decision' | 'Executive Regulations' | 'Federal Law' | 'Residence' | 'Work';
+export type LegislationCategory = 'Regulatory Decision' | 'Executive Regulations' | 'Federal Law' | 'Residence' | 'Work' | 'Health' | 'Education';
 
 export type Legislation = {
   id: string;
@@ -77,6 +76,24 @@ const legislations: Legislation[] = [
     date: '2024-06-11',
     summary: 'Mandates disclosure of ultimate beneficial ownership for all real estate transactions.',
     fullText: `Provision 1. ${LOREM_IPSUM} Provision 2. ${LOREM_IPSUM}`
+  },
+  {
+    id: '8',
+    slug: 'health-data-law-2024',
+    title: 'Federal Law No. 3 of 2024 on Health Data Management',
+    category: 'Health',
+    date: '2024-07-15',
+    summary: 'Regulates the processing and sharing of health data to ensure patient privacy and security.',
+    fullText: `Article 1: Definitions. ${LOREM_IPSUM} Article 2: Patient Consent. ${LOREM_IPSUM}`
+  },
+  {
+    id: '9',
+    slug: 'education-licensing-standards-2024',
+    title: 'Regulatory Decision No. 15 of 2024 on Higher Education Licensing',
+    category: 'Education',
+    date: '2024-08-01',
+    summary: 'Sets new standards for the accreditation and licensing of universities and academic programs.',
+    fullText: `Section A: Institutional Licensing. ${LOREM_IPSUM} Section B: Program Accreditation. ${LOREM_IPSUM}`
   }
 ];
 
@@ -109,6 +126,8 @@ export const getCategories = () => {
         { name: 'Federal Law', slug: 'federal-law' },
         { name: 'Residence', slug: 'residence' },
         { name: 'Work', slug: 'work' },
+        { name: 'Health', slug: 'health' },
+        { name: 'Education', slug: 'education' },
     ];
     return categories;
 }
@@ -120,9 +139,13 @@ export const getLegislationStats = () => {
     'Federal Law': 0,
     'Residence': 0,
     'Work': 0,
+    'Health': 0,
+    'Education': 0
   };
   legislations.forEach((item) => {
-    stats[item.category] += 1;
+    if (stats[item.category] !== undefined) {
+      stats[item.category] += 1;
+    }
   });
-  return Object.entries(stats).map(([name, value]) => ({ name, value }));
+  return Object.entries(stats).map(([name, value]) => ({ name: name as LegislationCategory, value }));
 };

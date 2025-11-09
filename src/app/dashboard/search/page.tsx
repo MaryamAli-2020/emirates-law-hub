@@ -29,7 +29,7 @@ export default function SearchPage({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="container mx-auto px-4 py-8">
       <header>
         <h1 className="text-3xl font-bold font-headline">Search Results</h1>
         <p className="text-muted-foreground mt-2">
@@ -43,7 +43,7 @@ export default function SearchPage({
               name="query"
               defaultValue={query}
               placeholder="Search for legislation by keyword..."
-              className="w-full rounded-md bg-white pl-10 pr-20 py-2"
+              className="w-full rounded-md bg-background pl-10 pr-20 py-2"
               aria-label="Search legislation"
             />
             <Button type="submit" className="absolute right-1 top-1/2 -translate-y-1/2">
@@ -54,7 +54,7 @@ export default function SearchPage({
       </header>
       
       {results.length > 0 ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
           {results.map((item) => (
             <Card key={item.id} className="flex flex-col">
               <CardHeader>
@@ -66,7 +66,7 @@ export default function SearchPage({
                 <p className="text-sm text-muted-foreground line-clamp-3">{item.summary}</p>
               </CardContent>
               <CardFooter>
-                <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button asChild className="w-full">
                   <Link href={`/dashboard/legislation/${item.slug}`}>
                     Read More <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -76,7 +76,7 @@ export default function SearchPage({
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 border-2 border-dashed rounded-lg">
+        <div className="text-center py-16 border-2 border-dashed rounded-lg mt-6">
             <Search className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-semibold">No results found</h3>
             <p className="mt-2 text-sm text-muted-foreground">
