@@ -27,10 +27,8 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "/dashboard/public-policies", label: "Public policies" },
-  { href: "/dashboard/lab", label: "Legislation Laboratory" },
-  { href: "/dashboard/browse/federal-law", label: "Legislation", dropdown: true },
-  { href: "/dashboard/constitution", label: "UAE Constitution" },
+  { href: "/dashboard/browse", label: "Browse Legislation" },
+  { href: "/dashboard/constitution", label: "UAE Constitution", disabled: true },
 ]
 
 export function Header() {
@@ -63,15 +61,15 @@ export function Header() {
                 {navLinks.map(link => (
                     <Link
                         key={link.href}
-                        href={link.href}
+                        href={link.disabled ? "#" : link.href}
                         className={cn(
                             buttonVariants({ variant: "ghost" }),
                             "text-sm font-medium",
-                             pathname.startsWith(link.href) ? "text-primary" : "text-muted-foreground"
+                             pathname.startsWith(link.href) && !link.disabled ? "text-primary" : "text-muted-foreground",
+                             link.disabled && "pointer-events-none opacity-50"
                         )}
                     >
                         {link.label}
-                        {link.dropdown && <ChevronDown className="ml-1 h-4 w-4" />}
                     </Link>
                 ))}
             </nav>
@@ -101,11 +99,12 @@ export function Header() {
              {navLinks.map(link => (
                 <Link
                     key={link.href}
-                    href={link.href}
+                    href={link.disabled ? "#" : link.href}
                     className={cn(
                         buttonVariants({ variant: "ghost", size: "sm" }),
                         "justify-start",
-                         pathname.startsWith(link.href) ? "bg-accent text-accent-foreground" : ""
+                         pathname.startsWith(link.href) && !link.disabled ? "bg-accent text-accent-foreground" : "",
+                         link.disabled && "pointer-events-none opacity-50"
                     )}
                 >
                     {link.label}
