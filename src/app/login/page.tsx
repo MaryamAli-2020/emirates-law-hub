@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  AuthErrorCodes,
 } from 'firebase/auth';
 import { useAuth } from '@/firebase';
 import { Button } from '@/components/ui/button';
@@ -80,10 +81,17 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (error: any) {
       console.error(error);
+      let description = 'An unexpected error occurred.';
+      if (error.code === AuthErrorCodes.INVALID_CREDENTIAL) {
+        description = 'Incorrect email or password. Please try again or sign up if you don\'t have an account.';
+      } else if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        description = 'An account with this email already exists. Please log in instead.';
+      }
+
       toast({
         variant: 'destructive',
         title: 'Authentication Failed',
-        description: error.message || 'An unexpected error occurred.',
+        description: description,
       });
     } finally {
       setIsLoading(false);
