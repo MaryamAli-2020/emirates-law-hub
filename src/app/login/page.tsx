@@ -64,6 +64,15 @@ export default function LoginPage() {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
+    if (!auth) {
+        toast({
+            variant: "destructive",
+            title: "Authentication Failed",
+            description: "Firebase Auth is not available. Please try again later.",
+        });
+        setIsLoading(false);
+        return;
+    }
     try {
       if (activeTab === 'login') {
         await signInWithEmailAndPassword(auth, values.email, values.password);
