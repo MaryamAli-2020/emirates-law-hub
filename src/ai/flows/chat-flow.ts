@@ -13,7 +13,7 @@ import { getLegislations, Legislation } from '@/lib/data';
 
 // Prepare legislation data as a string for the prompt
 const legislationContext = getLegislations().map(l => 
-    `ID: ${l.id}\nTitle: ${l.title}\nLegislation Number: ${l.legislationNumber}\nLegislation Type: ${l.legislationType}\nCategory: ${l.category}\nDate: ${l.date}\nSummary: ${l.summary}\nSubject Matter: ${l.subjectMatter}\nFull Text: ${l.fullText}\n\n`
+    `ID: ${l.id}\nTitle: ${l.title}\nLegislation Number: ${l.legislationNumber}\nLegislation Type: ${l.legislationType}\nCategory: ${l.category}\nDate: ${l.date}\nSummary: ${l.summary}\nFull Text: ${l.fullText}\n\n`
 ).join('---');
 
 const ChatInputSchema = z.object({
