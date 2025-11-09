@@ -17,24 +17,37 @@ import {
   User,
   Home,
   BookUser,
-  Languages,
+  LogOut,
   Menu,
   ChevronDown
 } from "lucide-react"
-import { PlaceHolderImages } from "@/lib/placeholder-images"
 import React, { useState } from "react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useUser, useAuth } from "@/firebase"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { signOut } from "firebase/auth"
+import { useRouter }from "next/navigation"
 
 const navLinks = [
   { href: "/dashboard/browse", label: "Browse Legislation" },
-  { href: "/dashboard/constitution", label: "UAE Constitution", disabled: true },
+  { href: "#", label: "UAE Constitution", disabled: true },
 ]
 
 export function Header() {
-  const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    if(auth) {
+      await signOut(auth);
+      router.push('/login');
+    }
+  };
+
 
   return (
     <header className="sticky top-0 z-30 w-full border-b bg-background">
@@ -77,10 +90,40 @@ export function Header() {
         
         <div className="ml-auto flex items-center gap-2">
             <div className="hidden lg:flex items-center gap-2">
-              <Button variant="ghost" size="icon"><User /></Button>
-              <Button variant="ghost" size="icon"><Home /></Button>
-              <Button variant="ghost" size="icon"><BookUser /></Button>
-              <Button variant="ghost" size="icon" className="gap-1">EN <ChevronDown className="h-4 w-4" /></Button>
+              {!isUserLoading && !user && (
+                <Button asChild>
+                  <Link href="/login">Login</Link>
+                </Button>
+              )}
+              {user && (
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={user.photoURL || undefined} alt={user.email || "user"} />
+                          <AvatarFallback>
+                            <User />
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="end" forceMount>
+                      <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">My Account</p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleSignOut}>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          <span>Log out</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+              )}
             </div>
             <Button
                 variant="ghost"
@@ -110,6 +153,34 @@ export function Header() {
                     {link.label}
                 </Link>
             ))}
+            <DropdownMenuSeparator />
+            {!isUserLoading && !user && (
+              <Button asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+            )}
+             {user && (
+                <>
+                  <div className="flex items-center gap-2 p-2">
+                     <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.photoURL || undefined} alt={user.email || "user"} />
+                        <AvatarFallback>
+                          <User />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">My Account</p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user.email}
+                          </p>
+                        </div>
+                  </div>
+                   <Button variant="ghost" onClick={handleSignOut} className="justify-start">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </Button>
+                </>
+             )}
           </nav>
         </div>
       )}
