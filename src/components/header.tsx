@@ -30,6 +30,7 @@ import { signOut } from "firebase/auth"
 import { useRouter }from "next/navigation"
 
 const navLinks = [
+  { href: "/dashboard/insights", label: "My Dashboard" },
   { href: "/dashboard/browse", label: "Browse Legislation" },
   { href: "#", label: "UAE Constitution", disabled: true },
 ]
